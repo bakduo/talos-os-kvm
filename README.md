@@ -1,4 +1,4 @@
-Talos OS On KVM
+Talos OS On KVM only version <= 1.0.x
 =======================
 
 Desde hace tiempo por allá en la versión 0.x que vengo observando y probando este genial proyecto que encapsula en un OS Linux todo kubernetes world, a mi forma de ver entre los mejorcito open source que permite gestionar cluster de kubernetes sin tantos vueltas. Claro está y realmente recomendable antes de caer en Talos, es recomendable que el usuario este aggiornado en lo que significa deploy de kubernetes de hardway ya que es la mejor manera en la cual el usuario pueda abordar y entender los puntos que ponen de manifiesto el uso de un API-driven.
@@ -7,6 +7,50 @@ Para los que vienen de cloud la tiene más fácil... para los que vienen de Open
 
 Ahora, para los que nos copamos con KVM, sepan que también está disponible. Existe una [documentación](https://www.talos.dev/v1.1/talos-guides/install/virtualized-platforms/kvm/) inicial y para mi  no me alcanzo, de todas formas agradezco el aporte de [AlfadilTabar](https://gist.githubusercontent.com/AlfadilTabar/cf39050c746296aec4cdd4736dcc05e9/raw/1dc5a4bcc35c8e15fd5701f576bbb65eb60f20aa/talos-kvm.sh) ya que al abordar su idea de deploy puede agregar un par de tips y aportar esta próxima documentación.
 
+## TENER EN CUENTA versión 1.2.x
+
+Lamentablemente para la versión 1.2.x no es posible que funcione la misma guía he estado tratando de resolver el probleme pero nada aún en el grupo de matrix no tuve una respuesta aún de una punta del problema.
+
+Detalles del error:
+
+```
+
+
+ID       kubelet
+STATE    Running
+HEALTH   OK
+EVENTS   [Running]: Health check successful (32s ago)
+         [Running]: Started task kubelet (PID 1614) for container kubelet (34s ago)
+         [Preparing]: Creating service runner (34s ago)
+         [Preparing]: Running pre state (52s ago)
+         [Waiting]: Waiting for time sync (54s ago)
+         [Waiting]: Waiting for service "cri" to be "up", time sync (55s ago)
+         [Waiting]: Waiting for service "cri" to be "up", time sync, network (56s ago)
+
+ID       etcd
+STATE    Preparing
+HEALTH   ?
+EVENTS   [Preparing]: Running pre state (1m33s ago)
+         [Waiting]: Waiting for time sync (1m34s ago)
+         [Waiting]: Waiting for service "cri" to be "up", time sync (1m35s ago)
+         [Waiting]: Waiting for service "cri" to be "up", time sync, network, etcd spec (1m36s ago)
+
+
+error (user=apiserver-kubelet-client, verb=get, resource=nodes, subresource=proxy)\") has prevented the request from succeeding"}
+[ 2486.366403] [talos] kubernetes endpoint watch error {"component": "controller-runtime", "controller": "k8s.EndpointController", "error": "failed to list *v1.Endpoints: Get \"https://192.168.0.211:6443/api/v1/namespaces/default/endpoints?fieldSelector=metadata.name%3Dkubernetes&limit=500&resourceVersion=0\": EOF"}
+[ 2537.326673] [talos] controller failed {"component": "controller-runtime", "controller": "k8s.KubeletStaticPodController", "error": "error refreshing pod status: error fetching pod status: an error on the server (\"Authorization error (user=apiserver-kubelet-client, verb=get, resource=nodes, subresource=proxy)\") has prevented the request from succeeding"}
+[ 2541.831053] [talos] kubernetes endpoint watch error {"component": "controller-runtime", "controller": "k8s.EndpointController", "error": "failed to list *v1.Endpoints: Get \"https://192.168.0.211:6443/api/v1/namespaces/default/endpoints?fieldSelector=metadata.name%3Dkubernetes&limit=500&resourceVersion=0\": EOF"}
+[ 2582.353336] [talos] kubernetes endpoint watch error {"component": "controller-runtime", "controller": "k8s.EndpointController", "error": "failed to list *v1.Endpoints: Get \"https://192.168.0.211:6443/api/v1/namespaces/default/endpoints?fieldSelector=metadata.name%3Dkubernetes&limit=500&resourceVersion=0\": EOF"}
+
+```
+
+Esto ocurre al momento de pasar la configuración del controller
+
+```
+./talosctl-v1.2.x apply-config --insecure --nodes 192.168.x.y --file controlplane.yaml
+```
+
+Cuando pasamos la configuración ya comienzan los problemas. Esto es siempre y cuando tratemos de utilizar un **LB** de la misma forma que con la versión <= 1.0.x. No inicia el servicio interno en el puerto 6443 por lo tanto el LB no llega a comunicarse con el nodo.
 
 
 ## Configuración a tener en cuenta KVM

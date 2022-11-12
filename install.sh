@@ -24,7 +24,7 @@ case $1 in
 	--ram 3500 --vcpus 2 --os-type linux\
        	--os-variant=ubuntu18.04 --network bridge=$BRIDGE,model=virtio,mac=${MAC}\
        	--disk path=${PATH_DISK}/${NAME}.qcow2,size=20,device=disk,bus=virtio,cache=none\
-       	--cdrom ${PATH_ISO}/talos-amd64-v106.iso\
+       	--cdrom ${PATH_ISO}/${TALOS_NAME_ISO}\
        	--console pty,target_type=serial --graphics none --virt-type kvm\
        	--noautoconsole --dry-run
 		
@@ -48,7 +48,7 @@ case $1 in
         		--ram 3500 --vcpus 2 --os-type linux\
 		        --os-variant=ubuntu18.04 --network bridge=$BRIDGE,model=virtio,mac=${MAC}\
 		        --disk path=${PATH_DISK}/${NAME}.qcow2,size=20,device=disk,bus=virtio,cache=none\
-	        	--cdrom ${PATH_ISO}/talos-amd64-v106.iso\
+	        	--cdrom ${PATH_ISO}/${TALOS_NAME_ISO}\
 		        --console pty,target_type=serial --graphics none --virt-type kvm\
 		        --noautoconsole
 	;;
