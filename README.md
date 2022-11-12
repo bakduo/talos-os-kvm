@@ -9,7 +9,7 @@ Ahora, para los que nos copamos con KVM, sepan que también está disponible. Ex
 
 ## TENER EN CUENTA versión 1.2.x
 
-Lamentablemente para la versión 1.2.x no es posible que funcione la misma guía he estado tratando de resolver el probleme pero nada aún en el grupo de matrix no tuve una respuesta aún de una punta del problema.
+Lamentablemente para la versión 1.2.x no es posible que funcione la misma guía, trate de resolver el problema pero nada aún. En el grupo de matrix no tengo una respuesta aún de una punta del problema.
 
 Detalles del error:
 
